@@ -35,10 +35,8 @@
 									
 								<div class="collapse navbar-collapse" id="navbar-collapse">
 									<span class="discover">Where to live</span>
-									<ul class="nav navbar-nav">
-										<li><a href="https://www.themeregion.com/demo/newshub/index.html#">Home</a></li>
-										<li><a href="https://www.themeregion.com/demo/newshub/index2.html">Business</a></li>
-										<li><a href="https://www.themeregion.com/demo/newshub/index3.html">LifeStyle</a></li>
+									<ul class="nav navbar-nav" data-bind="foreach: cities">
+										<li><a data-bind="text: title"></a></li>
 									</ul>
 								</div>
 							</nav><!-- /navbar -->						

@@ -11,11 +11,14 @@ function initMap() {
 }
 
 let City = function(data) {
-	
+	this.title = data.title;
+	this.location = data.location;
 }
 
 let ViewModel = function() {
-	
+	this.cities = ko.observableArray(cities.map(function(city){
+		return new City(city);
+	}));
 }
 
 ko.applyBindings(new ViewModel());
