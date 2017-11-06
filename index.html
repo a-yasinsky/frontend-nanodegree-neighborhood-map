@@ -19,8 +19,7 @@
 		<![endif]-->
 	</head>
  	<body style="transform: none;">
-	  	<div class="main-wrapper">
-		  	<div class="container-fluid">
+	  	  	<div class="container-fluid main-wrapper">
 		  		<div class="row">
 					<div class="col-sm-3">
 						<div class="tr-menu sidebar-menu">
@@ -35,7 +34,7 @@
 								</div><!-- /navbar-header -->
 									
 								<div class="collapse navbar-collapse" id="navbar-collapse">
-									<span class="discover">Discover</span>
+									<span class="discover">Where to live</span>
 									<ul class="nav navbar-nav">
 										<li><a href="https://www.themeregion.com/demo/newshub/index.html#">Home</a></li>
 										<li><a href="https://www.themeregion.com/demo/newshub/index2.html">Business</a></li>
@@ -47,15 +46,19 @@
 					</div> 	
 					<div class="col-sm-9">
 						<div class="tr-section">
-							test
+							<div id="map"></div>
 						</div>
 					</div>		
 		  		</div><!-- /.row -->
 		  	</div><!-- /.container-fulid -->  		
-	  	</div><!-- /.main-wrapper -->
 	
-	<script src="js/jquery.min.js"></script>
-	<script src="js/bootstrap.min.js"></script>	  
-	
+	<script src="js/lib/jquery.min.js"></script>
+	<script src="js/lib/bootstrap.min.js"></script>	 
+	<script src="js/lib/knockout-3.2.0.js"></script>
+	<script src="js/data.js"></script>
+    <script src="js/app.js"></script>	
+	<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB0ChzvGEExQIUWT1ofwF_PKtQNJ9ybrZI&v=3&callback=initMap">
+    </script>
 	</body>
 </html>

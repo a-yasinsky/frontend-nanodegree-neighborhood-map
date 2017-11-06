@@ -5,6 +5,7 @@ body {
 	overflow-x:hidden;
 	-webkit-font-smoothing: antialiased;
 	background-color: #f0f3f5;
+	height: 100%;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -54,6 +55,10 @@ input:focus, textarea:focus, select:focus,
 
 .main-wrapper {
 	margin-top: 20px;
+}
+
+#map {
+	height: 85vh;
 }
 
 /* ==========================================================================
