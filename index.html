@@ -48,7 +48,7 @@
 										</form>
 									</div>
 									<ul class="nav navbar-nav" data-bind="foreach: filteredCities">
-										<li><a data-bind="text: title"></a></li>
+										<li data-bind="click: $parent.clickCityList"><a data-bind="text: title"></a></li>
 									</ul>
 								</div>
 							</nav><!-- /navbar -->						

@@ -24,6 +24,14 @@ let City = function(data) {
           });
 }
 
+City.prototype.bounceMarker = function() {
+	let that = this;
+	this.marker.setAnimation(google.maps.Animation.BOUNCE);
+	setTimeout(function(){
+		that.marker.setAnimation(null);
+	}, 700);
+};
+
 let ViewModel = function() {
 	this.cities = ko.observableArray(cities.map(function(city){
 		return new City(city);
@@ -48,6 +56,7 @@ let ViewModel = function() {
 		console.log(vaal);
 	}, null, "change");
 	
-	//this.cities.push(new City({title: 'San Francisko', location: {lat: 37.752929, lng: -122.450649}}));
-	//this.cities()[0].show(false);
+	this.clickCityList = function(){
+		this.bounceMarker();
+	};
 }
