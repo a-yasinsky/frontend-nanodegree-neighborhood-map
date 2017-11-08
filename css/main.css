@@ -228,22 +228,24 @@ span.discover {
 
 .search-icon {
 	cursor: pointer;
-	color: #c8cacc;
 	font-size: 16px;
+	background-color:#f2f3f5;
+	border-left-color:#fff;
+	color:#ff0000;
+	position: relative;
 	-webkit-transition: all 0.5s ease-in-out;
 	-moz-transition: all 0.5s ease-in-out;
 	-ms-transition: all 0.5s ease-in-out;
 	-o-transition: all 0.5s ease-in-out;
 	transition: all 0.5s ease-in-out;
+	border: none;
 }
 
 .search {
-	position: absolute;
-	top: 0;
 	z-index: 99;
-	right: 193px;
-	width: 0;
-	opacity:0;
+	width: 100%;
+	opacity: 1;
+	margin-top: 10px;
 	-webkit-transition: all 0.5s ease-in-out;
 	-moz-transition: all 0.5s ease-in-out;
 	-ms-transition: all 0.5s ease-in-out;
@@ -257,7 +259,7 @@ span.discover {
 }
 
 .search-form {
-	padding-left: 0;
+	padding-left: 5px;
 	height: 50px;
 	font-size: 14px;
 	outline: none;
