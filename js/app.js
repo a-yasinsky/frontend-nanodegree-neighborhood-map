@@ -58,6 +58,8 @@ City.prototype.bounceMarker = function() {
 };
 
 let ViewModel = function() {
+	let that = this;
+	
 	this.cities = ko.observableArray(cities.map(function(city){
 		return new City(city);
 	}));
@@ -83,7 +85,6 @@ let ViewModel = function() {
 	};
 	
 	this.findArea = function() {
-		let that= this;
 		map.geocode($('.search-form').val())
 		  .then(function(results){
 			let resultBounds = results.geometry.viewport;
@@ -101,4 +102,12 @@ let ViewModel = function() {
 			console.log(error);  
 		  });
 	}.bind(this);
+	
+	this.filterClear = function() {
+		$('.search-form').val("");
+		for(const city of that.cities()){
+			city.show(true);
+		}
+		map.map.setZoom(2);
+	}
 }

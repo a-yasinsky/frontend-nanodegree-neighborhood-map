@@ -229,6 +229,7 @@ span.discover {
 
 .search-icon {
 	font-size: 16px;
+	cursor: pointer;
 	background-color:#f2f3f5;
 	border-left-color:#fff;
 	color:#ff0000;
