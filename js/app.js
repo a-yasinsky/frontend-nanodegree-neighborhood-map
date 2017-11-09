@@ -35,6 +35,13 @@ function init() {
 	map = new Map('map', {lat: 41.087094, lng: -39.486305});
 	
 	ko.applyBindings(new ViewModel());
+	
+	var options = {
+		types: ["geocode"]
+	};
+	
+	let autocomplete = new google.maps.places.Autocomplete(
+            document.getElementById('search-form'), options);
 }
 
 let City = function(data) {
@@ -99,7 +106,7 @@ let ViewModel = function() {
 			//map.map.fitBounds(resultBounds);
 		  })
 		  .catch(function(error){
-			console.log(error);  
+			window.alert(error);  
 		  });
 	}.bind(this);
 	
@@ -108,6 +115,6 @@ let ViewModel = function() {
 		for(const city of that.cities()){
 			city.show(true);
 		}
-		map.map.setZoom(2);
+		map.map.setZoom(2); 
 	}
 }
