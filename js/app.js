@@ -2,12 +2,38 @@
 
 let map;
 
-function init() {
-	// Constructor creates a new map - only center and zoom are required.
-	map = new google.maps.Map(document.getElementById('map'), {
-	  center: {lat: 41.087094, lng: -39.486305},
+let Map = function(elementID, coords) {
+	this.map = new google.maps.Map(document.getElementById(elementID), {
+	  center: coords,
 	  zoom: 3
 	});
+	this.geocoder = new google.maps.Geocoder();
+};
+
+Map.prototype.geocode = function(searchValue){
+	let that = this;
+	let bounds = new google.maps.LatLngBounds();
+	bounds.extend({lat: -90, lng: -180});
+	bounds.extend({lat: 90, lng: 180});
+	let promise = new Promise(function(resolve,reject){
+		that.geocoder.geocode(
+            { address: searchValue,
+			  bounds: bounds }, 
+			function(results, status) {
+              if (status == google.maps.GeocoderStatus.OK) {
+                resolve(results[0]);
+              } else {
+                reject('We could not find that location');
+              }
+            });
+	});
+	return promise;
+};
+
+function init() {
+	// Constructor creates a new map - only center and zoom are required.
+	
+	map = new Map('map', {lat: 41.087094, lng: -39.486305});
 	
 	ko.applyBindings(new ViewModel());
 }
@@ -41,22 +67,30 @@ let ViewModel = function() {
 		let bounds = new google.maps.LatLngBounds();
 		let filteredCities = this.cities().filter(function(city) {
 			if(city.show()) {
-				city.marker.setMap(map);
+				city.marker.setMap(map.map);
 				bounds.extend(city.marker.position);
 			}else {
 				city.marker.setMap(null);
 			}
 			return city.show();
 		});
-		map.fitBounds(bounds);
+		map.map.fitBounds(bounds);
 		return filteredCities;
 	}.bind(this));
-	
-	this.filteredCities.subscribe(function(vaal){
-		console.log(vaal);
-	}, null, "change");
 	
 	this.clickCityList = function(){
 		this.bounceMarker();
 	};
+	
+	this.findArea = function() {
+		map.geocode($('.search-form').val())
+		  .then(function(results){
+			map.map.setCenter(results.geometry.location);
+			map.map.fitBounds(results.geometry.viewport);
+			console.log(results);  
+		  })
+		  .catch(function(error){
+			console.log(error);  
+		  });
+	}.bind(this);
 }

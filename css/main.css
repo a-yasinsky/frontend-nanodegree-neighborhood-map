@@ -33,6 +33,7 @@ input:focus {
 
 a:hover {
 	color: #ff0000;
+	cursor: pointer;
 }
 
 a:active,
@@ -227,7 +228,6 @@ span.discover {
 }
 
 .search-icon {
-	cursor: pointer;
 	font-size: 16px;
 	background-color:#f2f3f5;
 	border-left-color:#fff;
