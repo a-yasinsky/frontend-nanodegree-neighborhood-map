@@ -32,7 +32,6 @@ Map.prototype.geocode = function(searchValue){
 
 function init() {
 	// Constructor creates a new map - only center and zoom are required.
-	
 	map = new Map('map', {lat: 41.087094, lng: -39.486305});
 	
 	ko.applyBindings(new ViewModel());
@@ -83,11 +82,20 @@ let ViewModel = function() {
 	};
 	
 	this.findArea = function() {
+		let that= this;
 		map.geocode($('.search-form').val())
 		  .then(function(results){
+			let resultBounds = results.geometry.viewport;
 			map.map.setCenter(results.geometry.location);
-			map.map.fitBounds(results.geometry.viewport);
-			console.log(results);  
+			//map.map.fitBounds(results.geometry.viewport);
+			//console.log(results); 
+			for(const city of that.cities()){
+				if(resultBounds.contains(city.marker.position)){
+					city.show(true);
+				}else{
+					city.show(false);
+				}
+			}
 		  })
 		  .catch(function(error){
 			console.log(error);  
