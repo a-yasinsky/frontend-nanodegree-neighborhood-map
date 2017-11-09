@@ -74,6 +74,7 @@ let ViewModel = function() {
 			return city.show();
 		});
 		map.map.fitBounds(bounds);
+		map.map.setZoom(5);
 		return filteredCities;
 	}.bind(this));
 	
@@ -87,8 +88,6 @@ let ViewModel = function() {
 		  .then(function(results){
 			let resultBounds = results.geometry.viewport;
 			map.map.setCenter(results.geometry.location);
-			//map.map.fitBounds(results.geometry.viewport);
-			//console.log(results); 
 			for(const city of that.cities()){
 				if(resultBounds.contains(city.marker.position)){
 					city.show(true);
@@ -96,6 +95,7 @@ let ViewModel = function() {
 					city.show(false);
 				}
 			}
+			//map.map.fitBounds(resultBounds);
 		  })
 		  .catch(function(error){
 			console.log(error);  
