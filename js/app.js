@@ -8,6 +8,18 @@ let Map = function(elementID, coords) {
 	  zoom: 3
 	});
 	this.geocoder = new google.maps.Geocoder();
+	this.infoWindow = new google.maps.InfoWindow();
+	
+	this.init();
+};
+
+Map.prototype.init = function(){
+	const options = {
+		types: ["geocode"]
+	};
+	
+	this.autocomplete = new google.maps.places.Autocomplete(
+            document.getElementById('search-form'), options);
 };
 
 Map.prototype.geocode = function(searchValue){
@@ -35,13 +47,6 @@ function init() {
 	map = new Map('map', {lat: 41.087094, lng: -39.486305});
 	
 	ko.applyBindings(new ViewModel());
-	
-	var options = {
-		types: ["geocode"]
-	};
-	
-	let autocomplete = new google.maps.places.Autocomplete(
-            document.getElementById('search-form'), options);
 }
 
 let City = function(data) {
@@ -68,7 +73,13 @@ let ViewModel = function() {
 	let that = this;
 	
 	this.cities = ko.observableArray(cities.map(function(city){
-		return new City(city);
+		let cityObj = new City(city);
+		
+		cityObj.marker.addListener('click', function() {
+            that.openInfoWindow(this, map.infoWindow);
+          });
+		
+		return cityObj;
 	}));
 	
 	this.filteredCities = ko.computed(function() {
@@ -86,6 +97,19 @@ let ViewModel = function() {
 		map.map.setZoom(5);
 		return filteredCities;
 	}.bind(this));
+	
+	this.openInfoWindow = function(marker, infoWindow){
+		if(infoWindow.marker != marker){
+			infoWindow.setContent('');
+			infoWindow.marker = marker;
+			// Make sure the marker property is cleared if the infowindow is closed.
+			infoWindow.addListener('closeclick', function() {
+				infoWindow.marker = null;
+			});
+			infoWindow.setContent('<div>hi!</div>');
+			infoWindow.open(map.map, marker);
+		}
+	};
 	
 	this.clickCityList = function(){
 		this.bounceMarker();
