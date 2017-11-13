@@ -49,6 +49,18 @@ function init() {
 	ko.applyBindings(new ViewModel());
 }
 
+let Glassdoor = function(data) {
+	this.url = 'http://127.0.0.1/edsa-nmap/';
+	this.action = 'glassdoor';
+}
+
+Glassdoor.prototype.sendRequest = function(city) {
+	return fetch(`${this.url}?action=${this.action}&city=${city}`,{
+    method: 'GET',
+	mode: 'cors'
+	});
+}
+
 let City = function(data) {
 	let _self = this;
 	this.title = data.title;
@@ -100,14 +112,22 @@ let ViewModel = function() {
 	
 	this.openInfoWindow = function(marker, infoWindow){
 		if(infoWindow.marker != marker){
-			infoWindow.setContent('');
+			infoWindow.setContent('Loading...');
 			infoWindow.marker = marker;
 			// Make sure the marker property is cleared if the infowindow is closed.
 			infoWindow.addListener('closeclick', function() {
 				infoWindow.marker = null;
 			});
-			infoWindow.setContent('<div>hi!</div>');
 			infoWindow.open(map.map, marker);
+			let glassdoor = new Glassdoor();
+			glassdoor.sendRequest('Washington')
+			.then(response => response.json())
+			.then(function(data){
+				infoWindow.setContent(data);
+			})
+			.catch(function(error){
+				window.alert(error);
+			});
 		}
 	};
 	
