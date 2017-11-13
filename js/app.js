@@ -8,7 +8,7 @@ let Map = function(elementID, coords) {
 	  zoom: 3
 	});
 	this.geocoder = new google.maps.Geocoder();
-	this.infoWindow = new google.maps.InfoWindow();
+	
 	
 	this.init();
 };
@@ -17,9 +17,13 @@ Map.prototype.init = function(){
 	const options = {
 		types: ["geocode"]
 	};
-	
 	this.autocomplete = new google.maps.places.Autocomplete(
             document.getElementById('search-form'), options);
+			
+	const iwOptions = {
+		maxWidth: 400
+	};
+	this.infoWindow = new google.maps.InfoWindow(iwOptions);
 };
 
 Map.prototype.geocode = function(searchValue){
@@ -44,7 +48,7 @@ Map.prototype.geocode = function(searchValue){
 
 function init() {
 	// Constructor creates a new map - only center and zoom are required.
-	map = new Map('map', {lat: 41.087094, lng: -39.486305});
+	map = new Map('map', {lat: 37.567038, lng: -96.480547});
 	
 	ko.applyBindings(new ViewModel());
 }
@@ -159,6 +163,6 @@ let ViewModel = function() {
 		for(const city of that.cities()){
 			city.show(true);
 		}
-		map.map.setZoom(2); 
+		map.map.setZoom(4); 
 	}
 }
