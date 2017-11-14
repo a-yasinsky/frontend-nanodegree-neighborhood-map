@@ -8,8 +8,7 @@ let Map = function(elementID, coords) {
 	  zoom: 3
 	});
 	this.geocoder = new google.maps.Geocoder();
-	
-	
+
 	this.init();
 };
 
@@ -53,17 +52,26 @@ function init() {
 	ko.applyBindings(new ViewModel());
 }
 
-let Glassdoor = function(data) {
+let ApiManager = function() {
 	this.url = 'http://127.0.0.1/edsa-nmap/';
-	this.action = 'glassdoor';
+	this.action = '';
 }
 
-Glassdoor.prototype.sendRequest = function(city) {
+ApiManager.prototype.sendRequest = function(city) {
 	return fetch(`${this.url}?action=${this.action}&city=${city}`,{
     method: 'GET',
 	mode: 'cors'
 	});
 }
+
+let Glassdoor = function() {
+	ApiManager.call(this);
+	this.action = 'glassdoor';
+	this.poweredText = `<a href='https://www.glassdoor.com/index.htm'>powered by <img src='https://www.glassdoor.com/static/img/api/glassdoor_logo_80.png' title='Job Search' /></a>`;
+}
+
+Glassdoor.prototype = Object.create(ApiManager.prototype);
+Glassdoor.prototype.constructor = Glassdoor;
 
 let City = function(data) {
 	let _self = this;
@@ -124,10 +132,10 @@ let ViewModel = function() {
 			});
 			infoWindow.open(map.map, marker);
 			let glassdoor = new Glassdoor();
-			glassdoor.sendRequest('Washington')
+			glassdoor.sendRequest(marker.title)
 			.then(response => response.json())
 			.then(function(data){
-				infoWindow.setContent(data);
+				infoWindow.setContent(data.html + '<br>' + glassdoor.poweredText);
 			})
 			.catch(function(error){
 				window.alert(error);
