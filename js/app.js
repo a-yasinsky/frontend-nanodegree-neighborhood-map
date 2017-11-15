@@ -52,12 +52,12 @@ function init() {
 	ko.applyBindings(new ViewModel());
 }
 
-let ApiManager = function() {
+let RequestManager = function() {
 	this.url = 'http://127.0.0.1/edsa-nmap/';
 	this.action = '';
 }
 
-ApiManager.prototype.sendRequest = function(city) {
+RequestManager.prototype.sendRequest = function(city) {
 	return fetch(`${this.url}?action=${this.action}&city=${city}`,{
     method: 'GET',
 	mode: 'cors'
@@ -65,13 +65,37 @@ ApiManager.prototype.sendRequest = function(city) {
 }
 
 let Glassdoor = function() {
-	ApiManager.call(this);
+	RequestManager.call(this);
 	this.action = 'glassdoor';
 	this.poweredText = `<a href='https://www.glassdoor.com/index.htm'>powered by <img src='https://www.glassdoor.com/static/img/api/glassdoor_logo_80.png' title='Job Search' /></a>`;
 }
 
-Glassdoor.prototype = Object.create(ApiManager.prototype);
+Glassdoor.prototype = Object.create(RequestManager.prototype);
 Glassdoor.prototype.constructor = Glassdoor;
+
+let Numbeo = function() {
+	RequestManager.call(this);
+	this.action = 'numbeo';
+}
+
+Numbeo.prototype = Object.create(RequestManager.prototype);
+Numbeo.prototype.constructor = Numbeo;
+
+let ApiManager = function() {
+	this.glassdoor = new Glassdoor();
+	this.numbeo = new Numbeo();
+}
+
+ApiManager.prototype.getApisData = function(cityTitle) {
+	let that = this;
+	return [that.glassdoor].map(function(api){
+		return api.sendRequest(cityTitle)
+				.then(response => response.json())
+				.then(function(response){
+					return {[api.action]: response.html + '<br>' + api.poweredText};
+				});
+	});
+}
 
 let City = function(data) {
 	let _self = this;
@@ -131,15 +155,17 @@ let ViewModel = function() {
 				infoWindow.marker = null;
 			});
 			infoWindow.open(map.map, marker);
-			let glassdoor = new Glassdoor();
-			glassdoor.sendRequest(marker.title)
-			.then(response => response.json())
-			.then(function(data){
-				infoWindow.setContent(data.html + '<br>' + glassdoor.poweredText);
-			})
-			.catch(function(error){
-				window.alert(error);
+			let apiManager = new ApiManager();
+			apiManager.getApisData(marker.title).forEach(function(val){
+				val.then(response => {console.log(response);})
 			});
+					/*	.then(function(data){
+							infoWindow.setContent(data);
+						})
+						.catch(function(error){
+							window.alert(error);
+						});*/
+			
 		}
 	};
 	
