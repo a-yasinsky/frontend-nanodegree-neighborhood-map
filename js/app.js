@@ -72,14 +72,24 @@ let Glassdoor = function() {
 
 Glassdoor.prototype = Object.create(RequestManager.prototype);
 Glassdoor.prototype.constructor = Glassdoor;
+Glassdoor.prototype.getInfoText = function(responseData){
+	return responseData + '<br>' + this.poweredText;
+};
 
 let Numbeo = function() {
 	RequestManager.call(this);
 	this.action = 'numbeo';
+	this.poweredText = `More about indices: <a href='https://www.numbeo.com/cost-of-living/cpi_explained.jsp'>Numbeo</a>`;
 }
 
 Numbeo.prototype = Object.create(RequestManager.prototype);
 Numbeo.prototype.constructor = Numbeo;
+Numbeo.prototype.getInfoText = function(responseData){
+	let content = '<ul>';
+	for(let index in responseData)
+		content += `<li>${responseData[index].index}: ${responseData[index].value}</li>`;
+	return content + "</ul>" + '<br>' + this.poweredText;
+};
 
 let ApiManager = function() {
 	this.glassdoor = new Glassdoor();
@@ -88,11 +98,11 @@ let ApiManager = function() {
 
 ApiManager.prototype.getApisData = function(cityTitle) {
 	let that = this;
-	return [that.glassdoor].map(function(api){
+	return [that.glassdoor, that.numbeo].map(function(api){
 		return api.sendRequest(cityTitle)
 				.then(response => response.json())
 				.then(function(response){
-					return {[api.action]: response.html + '<br>' + api.poweredText};
+					return {[api.action]: api.getInfoText(response.response)};
 				});
 	});
 }
@@ -146,9 +156,16 @@ let ViewModel = function() {
 		return filteredCities;
 	}.bind(this));
 	
+	function returnContentForIW(texts){
+		return `${texts.glassdoor} <br> <br>
+			   ${texts.numbeo}`;
+	}
+	
 	this.openInfoWindow = function(marker, infoWindow){
 		if(infoWindow.marker != marker){
-			infoWindow.setContent('Loading...');
+			let texts = {glassdoor: 'Loading salary data...',
+						numbeo: 'Loading cost of living indices...'};
+			infoWindow.setContent(returnContentForIW(texts));
 			infoWindow.marker = marker;
 			// Make sure the marker property is cleared if the infowindow is closed.
 			infoWindow.addListener('closeclick', function() {
@@ -157,15 +174,12 @@ let ViewModel = function() {
 			infoWindow.open(map.map, marker);
 			let apiManager = new ApiManager();
 			apiManager.getApisData(marker.title).forEach(function(val){
-				val.then(response => {console.log(response);})
+				val.then(function(response){
+					let key = Object.keys(response)[0];
+					texts[key] = response[key];
+					infoWindow.setContent(returnContentForIW(texts));
+				});
 			});
-					/*	.then(function(data){
-							infoWindow.setContent(data);
-						})
-						.catch(function(error){
-							window.alert(error);
-						});*/
-			
 		}
 	};
 	
