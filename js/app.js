@@ -1,5 +1,9 @@
 'use strict';
 
+if (!window.Promise) {
+  window.Promise = Promise;
+}
+
 let map;
 
 let Map = function(elementID, coords) {
