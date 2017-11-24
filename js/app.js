@@ -61,6 +61,12 @@ RequestManager.prototype.sendRequest = function(city) {
 	return fetch(`${this.url}?action=${this.action}&city=${city}`,{
     method: 'GET',
 	mode: 'cors'
+	})
+	.then(function(response){
+		if(response.ok){
+			return response.json();
+		}
+		throw new Error('API is unavailable now.');
 	});
 }
 
@@ -100,7 +106,6 @@ ApiManager.prototype.getApisData = function(cityTitle) {
 	let that = this;
 	return [that.glassdoor, that.numbeo].map(function(api){
 		return api.sendRequest(cityTitle)
-				.then(response => response.json())
 				.then(function(response){
 					return {[api.action]: api.getInfoText(response.response)};
 				});
@@ -178,6 +183,10 @@ let ViewModel = function() {
 					let key = Object.keys(response)[0];
 					texts[key] = response[key];
 					infoWindow.setContent(returnContentForIW(texts));
+				})
+				.catch(function(error){
+					console.log(error);
+					infoWindow.setContent(`Please try again later. API is unavailable now (${error.message}).`);
 				});
 			});
 		}
@@ -185,6 +194,7 @@ let ViewModel = function() {
 	
 	this.clickCityList = function(){
 		this.bounceMarker();
+		that.openInfoWindow(this.marker, map.infoWindow);
 	};
 	
 	this.findArea = function() {
@@ -213,4 +223,8 @@ let ViewModel = function() {
 		}
 		map.map.setZoom(4); 
 	}
+	
+	map.autocomplete.addListener('place_changed', function() {
+		that.findArea();
+	});
 }
