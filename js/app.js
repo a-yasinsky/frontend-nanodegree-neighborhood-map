@@ -57,7 +57,7 @@ function init() {
 }
 
 let RequestManager = function() {
-	this.url = 'http://127.0.0.1/edsa-nmap/';
+	this.url = 'http://api.yasinsky.pro/';
 	this.action = '';
 }
 
