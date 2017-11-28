@@ -16,7 +16,7 @@ Because the Glassdoor's API does not provide salary data devided by cities, data
 Sometime it works with trouble, but it is good for Error Handling.
 
 ### Numbeo
-Use method GET /api/indices
+Use method GET /api/indices.
 Description: Returns Numbeo's indices for a city. Location can be specified with a query containing name or latitude,longitude (with comma separator).
 
 ## Dependencies
