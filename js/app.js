@@ -148,6 +148,8 @@
 	
 	let ViewModel = function() {
 		let that = this;
+		
+		this.searchValue = ko.observable("");
 		// all cities from data.js with eventListeners
 		this.cities = ko.observableArray(cities.map(function(city){
 			let cityObj = new City(city);
@@ -214,7 +216,7 @@
 		};
 		//on searchBox change. Finds locations, filters cities.
 		this.findArea = function() {
-			map.geocode($('.search-form').val())
+			map.geocode(this.searchValue())
 			  .then(function(results){
 				let resultBounds = results.geometry.viewport;
 				map.map.setCenter(results.geometry.location);
@@ -233,7 +235,7 @@
 		}.bind(this);
 		// clears cities
 		this.filterClear = function() {
-			$('.search-form').val("");
+			this.searchValue("");
 			for(const city of that.cities()){
 				city.show(true);
 			}
@@ -241,6 +243,7 @@
 		};
 		// on value pick in autocomplete
 		map.autocomplete.addListener('place_changed', function() {
+			that.searchValue(map.autocomplete.getPlace().formatted_address);
 			that.findArea();
 		});
 	};
