@@ -13,7 +13,7 @@ Map with US cities, where you can want to work as web developer. You can find sa
 
 ### Glassdoor
 Because the Glassdoor's API does not provide salary data devided by cities, data parse form [salary page](https://www.glassdoor.com/Salaries/company-salaries.htm) with POST parametrs. And the cityId could be found from [autocomplete method](https://www.glassdoor.com/findPopularLocationAjax.htm) on the main page.
-Sometim it works with trouble, but it is good for Error Handling.
+Sometime it works with trouble, but it is good for Error Handling.
 
 ### Numbeo
 Use method GET /api/indices
