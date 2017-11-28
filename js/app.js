@@ -49,6 +49,13 @@
 		});
 		return promise;
 	};
+	// make marker bounce on click, or click in list
+	Map.prototype.bounceMarker = function(marker) {
+		marker.setAnimation(google.maps.Animation.BOUNCE);
+		setTimeout(function(){
+			marker.setAnimation(null);
+		}, 700);
+	};
 	// app init function, set in gMaps callback
 	if (!window.nmAppInit) {
 		window.nmAppInit = function() {
@@ -138,15 +145,7 @@
 				animation: google.maps.Animation.DROP
 			  });
 	};
-	// make marker bounce on click, or click in list
-	City.prototype.bounceMarker = function() {
-		let that = this;
-		this.marker.setAnimation(google.maps.Animation.BOUNCE);
-		setTimeout(function(){
-			that.marker.setAnimation(null);
-		}, 700);
-	};
-
+	
 	let ViewModel = function() {
 		let that = this;
 		// all cities from data.js with eventListeners
@@ -154,7 +153,7 @@
 			let cityObj = new City(city);
 
 			cityObj.marker.addListener('click', function() {
-				that.openInfoWindow(this, map.infoWindow);
+				that.openInfoWindow(this);
 			  });
 
 			return cityObj;
@@ -181,7 +180,9 @@
 				   ${texts.numbeo}`;
 		}
 		//opens infoWindow on marker or list click
-		this.openInfoWindow = function(marker, infoWindow){
+		this.openInfoWindow = function(marker){
+			const infoWindow = map.infoWindow;
+			map.bounceMarker(marker);
 			if(infoWindow.marker != marker){
 				let texts = {glassdoor: 'Loading salary data...',
 							numbeo: 'Loading cost of living indices...'};
@@ -209,8 +210,7 @@
 		};
 		// on list click
 		this.clickCityList = function(){
-			this.bounceMarker();
-			that.openInfoWindow(this.marker, map.infoWindow);
+			that.openInfoWindow(this.marker);
 		};
 		//on searchBox change. Finds locations, filters cities.
 		this.findArea = function() {
