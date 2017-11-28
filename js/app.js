@@ -58,6 +58,12 @@
 			ko.applyBindings(new ViewModel());
 		};
 	}
+	// Error callback for GMap API request
+	if (!window.gmapError) {
+		window.gmapError = function() {
+			alert('Can not load Google Maps. Check your internet connection and reload the page.');
+		};
+	}
 	// class to manage requests from both apis
 	let RequestManager = function() {
 		this.url = 'http://api.yasinsky.pro/';
