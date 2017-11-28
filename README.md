@@ -11,11 +11,11 @@ Map with US cities, where you can want to work as web developer. You can find sa
 * [Glassdoor](https://www.glassdoor.com/developer/index.htm)
 * [Numbeo](https://www.numbeo.com/api/doc.jsp)
 
-###Glassdoor
+### Glassdoor
 Because the Glassdoor's API does not provide salary data devided by cities, data parse form [salary page](https://www.glassdoor.com/Salaries/company-salaries.htm) with POST parametrs. And the cityId could be found from [autocomplete method](https://www.glassdoor.com/findPopularLocationAjax.htm) on the main page.
 Sometim it works with trouble, but it is good for Error Handling.
 
-###Numbeo
+### Numbeo
 Use method GET /api/indices
 Description: Returns Numbeo's indices for a city. Location can be specified with a query containing name or latitude,longitude (with comma separator).
 
