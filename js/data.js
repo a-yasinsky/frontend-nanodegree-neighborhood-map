@@ -1,3 +1,4 @@
+// Basic dataset with cities
 const cities = [
           {title: 'San Francisco', location: {lat: 37.752929, lng: -122.450649}},
           {title: 'New York', location: {lat: 40.767912, lng: -73.963238}},
