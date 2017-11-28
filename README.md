@@ -21,11 +21,11 @@ Description: Returns Numbeo's indices for a city. Location can be specified with
 
 ## Dependencies
 
-* [HTML5 shiv](https://fonts.google.com/specimen/Roboto) 
-* [Respond](https://icomoon.io/) 
-* [Promise Polyfill](https://jasmine.github.io/)
-* [Fetch polyfill](http://handlebarsjs.com/)
+* [HTML5 shiv](https://github.com/aFarkas/html5shiv) 
+* [Respond](https://github.com/scottjehl/Respond/) 
+* [Promise Polyfill](https://github.com/taylorhakes/promise-polyfill)
+* [Fetch polyfill](https://github.com/github/fetch)
 * [jQuery](https://jquery.com/)
-* [Bootstrap](https://jquery.com/)
-* [Knockout](https://jquery.com/)
+* [Bootstrap](http://getbootstrap.com/)
+* [Knockout](http://knockoutjs.com/)
 * [Google Maps API](https://developers.google.com/maps/documentation/javascript/)
