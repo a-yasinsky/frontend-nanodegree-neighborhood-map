@@ -6,7 +6,7 @@
 	}
 	//general variable for Map object
 	let map;
-	//Map class, contains google map, geocoder, autocomplete, infowondows objects
+	//Map class, contains google map, geocoder, infowondows objects
 	let Map = function(elementID, coords) {
 		this.map = new google.maps.Map(document.getElementById(elementID), {
 		  center: coords,
@@ -16,14 +16,8 @@
 
 		this.init();
 	};
-	// sets options to autocomplete, infoWindow
+	// sets options to infoWindow
 	Map.prototype.init = function(){
-		const options = {
-			types: ["geocode"]
-		};
-		this.autocomplete = new google.maps.places.Autocomplete(
-				document.getElementById('search-form'), options);
-
 		const iwOptions = {
 			maxWidth: 400
 		};
@@ -214,25 +208,7 @@
 		this.clickCityList = function(){
 			that.openInfoWindow(this.marker);
 		};
-		//on searchBox change. Finds locations, filters cities.
-	/*	this.findArea = function() {
-			map.geocode(this.searchValue())
-			  .then(function(results){
-				let resultBounds = results.geometry.viewport;
-				map.map.setCenter(results.geometry.location);
-				for(const city of that.cities()){
-					if(resultBounds.contains(city.marker.position)){
-						city.show(true);
-					}else{
-						city.show(false);
-					}
-				}
-				//map.map.fitBounds(resultBounds);
-			  })
-			  .catch(function(error){
-				window.alert(error);
-			  });
-		}.bind(this); */
+		//on searchBox change. Filters cities.
 		this.findArea = function() {
 			var filter = that.searchValue().toLowerCase();
 			if (filter) {
@@ -246,8 +222,13 @@
 				});
 			}
 		}.bind(this);
-		this.searchValue.subscribe(that.findArea);
-		// clears cities
+		this.searchValue.subscribe(function(newValue){
+			if(newValue == "")
+				that.filterClear();
+			else
+				that.findArea();
+		});
+		// clears cities filter
 		this.filterClear = function() {
 			this.searchValue("");
 			for(const city of that.cities()){
@@ -255,12 +236,5 @@
 			}
 			map.map.setZoom(4);
 		};
-		
-		
-		// on value pick in autocomplete
-		/*map.autocomplete.addListener('place_changed', function() {
-			that.searchValue(map.autocomplete.getPlace().formatted_address);
-			that.findArea();
-		});*/
 	};
 }());
