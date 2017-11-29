@@ -40,15 +40,15 @@
 								<div class="collapse navbar-collapse" id="navbar-collapse">
 									<span class="discover">Where to work</span>
 									<div class="search">
-										<form data-bind="submit: findArea">
+										
 										  <div class="form-group">
 											<div class="input-group">
-											  <input type="text" data-bind="value: searchValue" class="search-form" autocomplete="off" id="search-form" placeholder="Type filter &amp; Press Enter">
+											  <input type="text" data-bind="textInput: searchValue" class="search-form" autocomplete="off" id="search-form" placeholder="Type filter &amp; Press Enter">
 											  <div class="input-group-addon search-icon" data-bind="click: filterClear">X</div>
 											</div>
 											<p class="help-block">e.g. "California", "Virginia", "Texas"...</p>
 										  </div>
-										</form>
+										
 									</div>
 									<ul class="nav navbar-nav" data-bind="foreach: filteredCities">
 										<li data-bind="click: $parent.clickCityList"><a data-bind="text: title"></a></li>

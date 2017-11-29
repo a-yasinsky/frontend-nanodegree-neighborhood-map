@@ -215,7 +215,7 @@
 			that.openInfoWindow(this.marker);
 		};
 		//on searchBox change. Finds locations, filters cities.
-		this.findArea = function() {
+	/*	this.findArea = function() {
 			map.geocode(this.searchValue())
 			  .then(function(results){
 				let resultBounds = results.geometry.viewport;
@@ -232,7 +232,21 @@
 			  .catch(function(error){
 				window.alert(error);
 			  });
+		}.bind(this); */
+		this.findArea = function() {
+			var filter = that.searchValue().toLowerCase();
+			if (filter) {
+				ko.utils.arrayFilter(that.cities(), function(city) {
+					if(city.title.toLowerCase().indexOf(filter) >= 0){
+						city.show(true);
+					}else{
+						city.show(false);
+					}
+					return true;
+				});
+			}
 		}.bind(this);
+		this.searchValue.subscribe(that.findArea);
 		// clears cities
 		this.filterClear = function() {
 			this.searchValue("");
@@ -241,10 +255,12 @@
 			}
 			map.map.setZoom(4);
 		};
+		
+		
 		// on value pick in autocomplete
-		map.autocomplete.addListener('place_changed', function() {
+		/*map.autocomplete.addListener('place_changed', function() {
 			that.searchValue(map.autocomplete.getPlace().formatted_address);
 			that.findArea();
-		});
+		});*/
 	};
 }());
