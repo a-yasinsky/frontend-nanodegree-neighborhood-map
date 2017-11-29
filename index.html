@@ -9,7 +9,7 @@
 
 		<!-- CSS -->
 		<link rel="stylesheet" href="css/bootstrap.min.css">
-		<link rel="stylesheet" href="css/main.css">  
+		<link rel="stylesheet" href="css/main.css">
 		<link rel="stylesheet" href="css/responsive.css">
 
 		<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -17,10 +17,6 @@
 		<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
 		<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 		<![endif]-->
-		
-		<!-- Promise and fetch polyfills -->
-		<script src="js/lib/promise.min.js"></script>
-		<script src="js/lib/fetch.js"></script>
 	</head>
  	<body style="transform: none;">
 	  	  	<div class="container-fluid main-wrapper">
@@ -36,11 +32,11 @@
 									<span class="icon-bar"></span>
 									</button>
 								</div><!-- /navbar-header -->
-									
+
 								<div class="collapse navbar-collapse" id="navbar-collapse">
 									<span class="discover">Where to work</span>
 									<div class="search">
-										
+
 										  <div class="form-group">
 											<div class="input-group">
 											  <input type="text" data-bind="textInput: searchValue" class="search-form" autocomplete="off" id="search-form" placeholder="Type filter &amp; Press Enter">
@@ -48,28 +44,31 @@
 											</div>
 											<p class="help-block">e.g. "California", "Virginia", "Texas"...</p>
 										  </div>
-										
+
 									</div>
 									<ul class="nav navbar-nav" data-bind="foreach: filteredCities">
 										<li data-bind="click: $parent.clickCityList"><a data-bind="text: title"></a></li>
 									</ul>
 								</div>
-							</nav><!-- /navbar -->						
-						</div><!-- /left-memu -->				
-					</div> 	
+							</nav><!-- /navbar -->
+						</div><!-- /left-memu -->
+					</div>
 					<div class="col-sm-9">
 						<div class="tr-section">
 							<div id="map"></div>
 						</div>
-					</div>		
+					</div>
 		  		</div><!-- /.row -->
-		  	</div><!-- /.container-fulid -->  		
-	
+		  	</div><!-- /.container-fulid -->
+	<!-- Promise and fetch polyfills -->
+	<script src="js/lib/promise.min.js"></script>
+	<script src="js/lib/fetch.js"></script>
+
 	<script src="js/lib/jquery.min.js"></script>
-	<script src="js/lib/bootstrap.min.js"></script>	 
+	<script src="js/lib/bootstrap.min.js"></script>
 	<script src="js/lib/knockout-3.2.0.js"></script>
 	<script src="js/data.js"></script>
-    <script src="js/app.js"></script>	
+    <script src="js/app.js"></script>
 	<!-- masked in api, just to hide APIKey -->
 	<script src="http://api.yasinsky.pro/?action=mapsjs&libraries=places&v=3&callback=nmAppInit"
 	 async defer onerror="gmapError()"></script>

@@ -136,13 +136,15 @@
 		this.marker = new google.maps.Marker({
 				position: _self.location,
 				title: _self.title,
+				map: map.map,
+				visible: false,
 				animation: google.maps.Animation.DROP
 			  });
 	};
-	
+
 	let ViewModel = function() {
 		let that = this;
-		
+
 		this.searchValue = ko.observable("");
 		// all cities from data.js with eventListeners
 		this.cities = ko.observableArray(cities.map(function(city){
@@ -159,10 +161,10 @@
 			let bounds = new google.maps.LatLngBounds();
 			let filteredCities = this.cities().filter(function(city) {
 				if(city.show()) {
-					city.marker.setMap(map.map);
+					city.marker.setVisible(true);
 					bounds.extend(city.marker.position);
 				}else {
-					city.marker.setMap(null);
+					city.marker.setVisible(false);
 				}
 				return city.show();
 			});
